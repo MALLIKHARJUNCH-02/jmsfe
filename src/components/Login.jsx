@@ -26,7 +26,11 @@ const Login = () => {
             console.log(response.data);
 
             if (response.data.success === true) {
-                navigate("/jobs");
+                setMessage("Login successful! Redirecting...");
+
+                setTimeout(() => {
+                    navigate("/jobs");
+                }, 2000);
             } else {
                 setMessage(response.data.message);
             }
