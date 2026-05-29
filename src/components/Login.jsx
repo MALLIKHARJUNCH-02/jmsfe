@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Dashboard from "./Dashboard";
 
 const Login = () => {
 
@@ -29,7 +30,7 @@ const Login = () => {
                 setMessage("Login successful! Redirecting...");
 
                 setTimeout(() => {
-                    navigate("/jobs");
+                    navigate("/dashboard");
                 }, 2000);
             } else {
                 setMessage(response.data.message);

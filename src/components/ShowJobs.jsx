@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://localhost:5000/api";
 
-
-const tableTitles = ["Job Title", "Company Name", "Location", "Salary", "JobType", "Experience", "Description", "Skills"]
-const jobObjectProperties = ["title", "companyName", "location", "salary", "jobType", "experience", "description", "skills"]
 const Jobs = () => {
 
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -48,33 +48,46 @@ const Jobs = () => {
 
             <h1 className="font-bold text-4xl text-blue-500">Job List</h1>
 
+            <div className="flex gap-10 flex-wrap justify-center align-center m-5">
+
+                {jobs.map((job) => (
+                    <div className="flex flex-col border-3 border-blue-500 rounded-xl gap-5 w-100 p-5 ">
+                        <h1 className="text-2xl text-orange-700">{job.title}</h1>
+                        <p>Exp : {job.experience}</p>
+
+                        <div className="flex flex-col gap-3">
+                            <h2>Company Name :{job.companyName}</h2>
+                            <h3>Job Location : {job.location}</h3>
+                            <h3>Salary : {job.salary}</h3>
+                            <h3>Job Type : {job.jobType}</h3>
+
+                            {/* <p>{job.description}</p> */}
+
+                            <dl>
+                                <dt>Job Description: </dt>
+                                <dd>{job.description}</dd>
+                            </dl>
+
+                            <div className="flex gap-2 flex-wrap">
+                                {job.skills.map((skill) => (
+                                    <p>{skill},</p>
+                                ))}
+
+                            </div>
+                        </div>
+
+                        <div className="flex gap-10 w-90 justify-between">
+                            <button type="button" className="border border-green-500 bg-green-500 text-white hover:bg-white hover:text-green-500 p-2 cursor-pointer rounded" onClick={() => navigate(`/edit-job/${job._id}`)}>
+                                Edit Job
+                            </button>
+                            <button type="button" className="border p-2 cursor-pointer">Delete Job</button>
+                        </div>
+
+                    </div>
+                ))}
 
 
-            <table className="m-5">
-                <thead>
-                    <tr>
-                        {tableTitles.map((title, index) => (
-                            <th className="border-3 border-blue-500 p-2" key={index}>{title}</th>
-                        ))}
-                    </tr>
-
-                </thead>
-
-                <tbody className="text-center">
-                    {jobs.map((job) => (
-                        <tr key={job._id}>
-                            {jobObjectProperties.map((property, index) => (
-                                <td key={index} className="border-2 border-green-500 p-5">
-                                    {Array.isArray(job[property]) ? job[property].join(", ") : job[property]}
-                                    {/* {job[property]} */}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-
+            </div>
 
         </div>
 
